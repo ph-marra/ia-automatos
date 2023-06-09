@@ -16,8 +16,9 @@ class CellularAutomata:
         
         self.type = type
 
-        type_dict = {'center': inivalues.center, 'right': inivalues.ljust, 'left': inivalues.rjust}
+        type_dict = {'center': inivalues.center, 'right': inivalues.rjust, 'left': inivalues.ljust}
         self.currentvalues = type_dict.get(type)(self.n, '0')
+        self.inivalues = self.currentvalues
 
         self.nrule = rule
         self.vhistory = [list(self.currentvalues)]
@@ -65,4 +66,4 @@ class CellularAutomata:
     def export_history(self):
         img = np.array(self.vhistory, dtype=np.int8)
         img = np.where(img == 0, 255, 0)
-        cv2.imwrite(f'rule={self.nrule}_iters={len(self.vhistory)}_type={self.type}.png', img)
+        cv2.imwrite(f'inivalues={self.inivalues}_rule={self.nrule}_iters={len(self.vhistory)}_type={self.type}.png', img)

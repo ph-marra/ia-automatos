@@ -22,9 +22,21 @@ except:
 try:
     starting = sys.argv[sys.argv.index('--starting')+1]
 except:
-    starting = random.choice(['impulse', '25%', '50%', '75%', 'random'])
+    starting = random.choice(['impulse', '25%', '50%', '75%', 'random', 'standard'])
 
-if starting == 'impulse':
+if starting == 'standard':
+    try:
+        inivalues = sys.argv[sys.argv.index('--starting')+2]
+    except:
+        inivalues = '1'
+    
+    try:
+        type = sys.argv[sys.argv.index('--starting')+3]
+        automata = CellularAutomata(n=n, inivalues=inivalues, rule=rule, type=type)
+    except:
+        automata = CellularAutomata(n=n, inivalues=inivalues, rule=rule)
+
+elif starting == 'impulse':
     try:
         left = sys.argv.index('-left')
         left = True
@@ -45,8 +57,15 @@ if starting == 'impulse':
 
     automata = Impulse(n=n, rule=rule, left=left, center=center, right=right)
 
+# random
 else:
-    automata = Others(n=n, rule=rule, type=starting)
+    vs = [str(random.randint(0,1)) for c in range(n)]
+    inivalues = ''
+    for v in vs:
+        inivalues += v
+        
+    type = random.choice(['left', 'center', 'right'])
+    automata = CellularAutomata(n=n, inivalues=inivalues, rule=rule, type=type)
 
 automata.evolution(iters-1)
 automata.export_history()
