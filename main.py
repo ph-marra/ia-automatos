@@ -1,6 +1,7 @@
 from CellularAutomata import CellularAutomata
 from Impulse import Impulse
 from Others import Others
+from Random import Random
 import sys
 import random
 
@@ -57,15 +58,12 @@ elif starting == 'impulse':
 
     automata = Impulse(n=n, rule=rule, left=left, center=center, right=right)
 
+elif starting != 'random':
+    automata = Others(n=n, rule=rule, type=starting)
+
 # random
 else:
-    vs = [str(random.randint(0,1)) for c in range(n)]
-    inivalues = ''
-    for v in vs:
-        inivalues += v
-        
-    type = random.choice(['left', 'center', 'right'])
-    automata = CellularAutomata(n=n, inivalues=inivalues, rule=rule, type=type)
+    automata = Random(n=n, rule=rule)
 
 automata.evolution(iters-1)
 automata.export_history()
